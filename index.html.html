@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Supermom — A Community for Every Mother</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --deep: #4A3728;
+    --rose: #B5746A;
+    --rose-light: #D4998F;
+    --gold: #C9A96E;
+    --gold-light: #E8D5B0;
+    --blush: #F0DDD8;
+    --sage: #8A9E8C;
+    --text-muted: #6B5E5A;
+    --border: rgba(181,116,106,0.2);
+    --warm-beige: #EDE0D4;
+    --warm-beige-dark: #DFD0C4;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── SCREENS ─────────────────────────────────── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* ─── LANDING ─────────────────────────────────── */
+  #screen-landing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--warm-beige);
+  }
+  .landing-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(181,116,106,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(201,169,110,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(181,116,106,0.1) 0%, transparent 70%),
+      var(--warm-beige);
+    z-index: 0;
+  }
+  .grain {
+    position: absolute; inset: 0; z-index: 1; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+  .landing-content { position: relative; z-index: 2; text-align: center; padding: 40px 24px; }
+  .landing-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .landing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 12vw, 120px);
+    font-weight: 300;
+    color: var(--deep);
+    line-height: 0.9;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+  .landing-title em {
+    font-style: italic;
+    color: var(--rose);
+  }
+  .landing-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(18px, 3vw, 26px);
+    color: rgba(74,55,40,0.55);
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+  .landing-divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .landing-question {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(74,55,40,0.5);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .landing-buttons {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.1s forwards;
+  }
+  .btn-landing {
+    position: relative;
+    padding: 18px 44px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.35s ease;
+    overflow: hidden;
+  }
+  .btn-landing::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.08);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-landing:hover::after { opacity: 1; }
+  .btn-primary-land {
+    background: var(--rose);
+    color: var(--cream);
+  }
+  .btn-primary-land:hover { background: var(--rose-light); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(181,116,106,0.35); }
+  .btn-secondary-land {
+    background: transparent;
+    color: var(--deep);
+    border: 1px solid rgba(74,55,40,0.3);
+  }
+  .btn-secondary-land:hover { border-color: var(--rose); color: var(--rose); transform: translateY(-2px); }
+  .landing-footer {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    font-size: 11px; letter-spacing: 3px; color: rgba(74,55,40,0.3);
+    font-weight: 200;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.4s forwards;
+  }
+
+  /* ─── SURVEY WRAPPER ──────────────────────────── */
+  #screen-mom-survey, #screen-provider-survey {
+    background: var(--cream);
+    min-height: 100vh;
+    display: none;
+  }
+  #screen-mom-survey.active, #screen-provider-survey.active { display: block; }
+
+  .survey-header {
+    background: var(--warm-beige-dark);
+    padding: 20px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(181,116,106,0.15);
+  }
+  .survey-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--deep);
+    letter-spacing: 1px;
+  }
+  .survey-logo span { color: var(--rose); font-style: italic; }
+  .progress-bar-wrap { display: flex; align-items: center; gap: 12px; }
+  .progress-bar-track {
+    width: 160px; height: 2px;
+    background: rgba(74,55,40,0.12);
+    border-radius: 2px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-label { font-size: 11px; letter-spacing: 2px; color: rgba(74,55,40,0.4); font-weight: 200; text-transform: uppercase; }
+
+  .survey-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+  .survey-step { display: none; }
+  .survey-step.active { display: block; animation: fadeUp 0.5s ease forwards; }
+
+  .step-number {
+    font-size: 11px; letter-spacing: 4px; color: var(--rose);
+    font-weight: 300; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .step-question {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--deep);
+    margin-bottom: 12px;
+  }
+  .step-question em { font-style: italic; color: var(--rose); }
+  .step-hint {
+    font-size: 13px; color: var(--text-muted); font-weight: 300;
+    margin-bottom: 44px; line-height: 1.6;
+  }
+
+  .choice-grid { display: grid; gap: 12px; }
+  .choice-grid.col-2 { grid-template-columns: 1fr 1fr; }
+  .choice-card {
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    text-align: left;
+  }
+  .choice-card:hover { border-color: var(--rose); background: rgba(181,116,106,0.04); transform: translateX(4px); }
+  .choice-card.selected { border-color: var(--rose); background: var(--blush); }
+  .choice-card.selected::after {
+    content: '✓';
+    position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+    color: var(--rose); font-size: 14px;
+  }
+  .choice-label { font-size: 14px; font-weight: 400; color: var(--deep); margin-bottom: 4px; }
+  .choice-sub { font-size: 12px; color: var(--text-muted); font-weight: 300; }
+
+  .text-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    background: white;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--deep);
+    outline: none;
+    transition: border-color 0.25s;
+    resize: none;
+  }
+  .text-input:focus { border-color: var(--rose); }
+  .text-input::placeholder { color: rgba(107,94,90,0.4); }
+
+  .btn-next {
+    margin-top: 40px;
+    padding: 18px 52px;
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-next:hover { background: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(181,116,106,0.3); }
+  .btn-back {
+    margin-top: 16px;
+    margin-left: 16px;
+    padding: 18px 32px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-back:hover { border-color: var(--rose); color: var(--rose); }
+
+  /* ─── MAIN APP ────────────────────────────────── */
+  #screen-app { display: none; }
+  #screen-app.active { display: block; }
+
+  .app-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--warm-beige-dark);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+    border-bottom: 1px solid rgba(181,116,106,0.2);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 400;
+    color: var(--deep); letter-spacing: 1px;
+  }
+  .nav-logo span { color: var(--rose); font-style: italic; }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-link {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 300; color: rgba(74,55,40,0.5);
+    cursor: pointer; border: none; background: none;
+    transition: color 0.25s; padding: 0;
+  }
+  .nav-link:hover, .nav-link.active-tab { color: var(--rose); }
+  .nav-greeting {
+    font-size: 12px; color: rgba(74,55,40,0.45);
+    font-weight: 200; letter-spacing: 1px;
+  }
+  .nav-greeting strong { color: var(--rose); font-weight: 400; }
+
+  .tab-content { display: none; }
+  .tab-content.active-tab { display: block; }
+
+  /* ─── HERO SECTION ────────────────────────────── */
+  .app-hero {
+    background: var(--warm-beige);
+    padding: 80px 40px 100px;
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .app-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 50% 100%, rgba(181,116,106,0.15) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 5px; color: var(--gold);
+    font-weight: 200; text-transform: uppercase;
+    margin-bottom: 20px; position: relative;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 300; color: var(--deep);
+    line-height: 1.1; margin-bottom: 16px; position: relative;
+  }
+  .hero-name em { font-style: italic; color: var(--rose); }
+  .hero-sub {
+    font-size: 14px; color: rgba(74,55,40,0.5);
+    font-weight: 300; letter-spacing: 1px;
+    max-width: 500px; margin: 0 auto; line-height: 1.7; position: relative;
+  }
+
+  /* ─── GROUPS ──────────────────────────────────── */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
+  .section-eyebrow {
+    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--rose); font-weight: 300; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 300; color: var(--deep);
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .section-title em { font-style: italic; color: var(--rose); }
+  .section-desc {
+    font-size: 14px; color: var(--text-muted);
+    font-weight: 300; line-height: 1.8;
+    max-width: 560px; margin-bottom: 60px;
+  }
+
+  .groups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+  .group-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+    position: relative; overflow: hidden;
+    transition: all 0.35s ease;
+    cursor: pointer;
+  }
+  .group-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--rose);
+    transition: height 0.35s ease;
+  }
+  .group-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(26,18,16,0.1); border-color: rgba(181,116,106,0.35); }
+  .group-card:hover::before { height: 100%; }
+  .group-card.joined { border-color: var(--rose); background: var(--blush); }
+  .group-card.joined::before { height: 100%; }
+
+  .group-icon { font-size: 28px; margin-bottom: 20px; display: block; }
+  .group-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--deep); margin-bottom: 10px;
+  }
+  .group-desc { font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.7; margin-bottom: 24px; }
+  .group-meta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .group-tag {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--rose); font-weight: 400;
+    padding: 5px 12px; border: 1px solid rgba(181,116,106,0.3);
+  }
+  .group-spots { font-size: 12px; color: var(--text-muted); font-weight: 300; }
+  .btn-join {
+    margin-top: 24px;
+    width: 100%; padding: 14px;
+    background: var(--deep); color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; font-weight: 300;
+    border: none; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-join:hover { background: var(--rose); }
+  .btn-join.joined-btn { background: var(--rose); }
+
+  /* ─── SERVICES ────────────────────────────────── */
+  .services-tabs { display: flex; gap: 0; margin-bottom: 48px; border-bottom: 1px solid var(--border); }
+  .service-tab {
+    padding: 14px 36px; font-size: 12px; letter-spacing: 3px;
+    text-transform: uppercase; font-weight: 300;
+    color: var(--text-muted); cursor: pointer;
+    border: none; background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.25s; margin-bottom: -1px;
+  }
+  .service-tab:hover { color: var(--rose); }
+  .service-tab.active { color: var(--rose); border-bottom-color: var(--rose); }
+
+  .providers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .provider-card {
+    background: white; border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.35s ease;
+  }
+  .provider-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(26,18,16,0.1); }
+  .provider-img {
+    width: 100%; height: 220px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+  }
+  .provider-body { padding: 28px 24px; }
+  .provider-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500; margin-bottom: 4px;
+  }
+  .provider-role { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); font-weight: 300; margin-bottom: 14px; }
+  .provider-bio { font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.7; margin-bottom: 20px; }
+  .provider-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .provider-tag { font-size: 10px; padding: 4px 10px; background: var(--blush); color: var(--rose); letter-spacing: 1px; }
+  .provider-rating { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+  .stars { color: var(--gold); letter-spacing: 1px; }
+  .btn-book {
+    width: 100%; padding: 14px;
+    background: var(--deep); color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 300; border: none; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-book:hover { background: var(--rose); }
+
+  /* ─── PROVIDER SURVEY ─────────────────────────── */
+  #screen-provider-survey {
+    background: var(--warm-beige);
+  }
+  #screen-provider-survey .survey-header {
+    background: var(--warm-beige-dark);
+    border-bottom: 1px solid rgba(181,116,106,0.15);
+  }
+  #screen-provider-survey .survey-body {
+    padding: 80px 24px 120px;
+  }
+  #screen-provider-survey .step-question { color: var(--deep); }
+  #screen-provider-survey .step-number { color: var(--rose); }
+  #screen-provider-survey .step-hint { color: rgba(74,55,40,0.55); }
+  #screen-provider-survey .choice-card {
+    background: white;
+    border-color: var(--border);
+  }
+  #screen-provider-survey .choice-card:hover {
+    background: rgba(181,116,106,0.06);
+    border-color: var(--rose);
+  }
+  #screen-provider-survey .choice-card.selected {
+    background: var(--blush);
+    border-color: var(--rose);
+  }
+  #screen-provider-survey .choice-label { color: var(--deep); }
+  #screen-provider-survey .choice-sub { color: var(--text-muted); }
+  #screen-provider-survey .text-input {
+    background: white;
+    border-color: var(--border);
+    color: var(--deep);
+  }
+  #screen-provider-survey .text-input::placeholder { color: rgba(107,94,90,0.4); }
+  #screen-provider-survey .btn-next { background: var(--rose); color: var(--cream); }
+  #screen-provider-survey .btn-next:hover { background: var(--rose-light); }
+  #screen-provider-survey .btn-back { border-color: var(--border); color: var(--text-muted); }
+
+  /* ─── SUCCESS SCREEN ──────────────────────────── */
+  #screen-success {
+    background: var(--warm-beige); min-height: 100vh;
+    display: none; align-items: center; justify-content: center;
+    text-align: center; padding: 40px;
+    flex-direction: column;
+  }
+  #screen-success.active { display: flex; }
+  .success-icon { font-size: 56px; margin-bottom: 32px; }
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 300; color: var(--deep);
+    margin-bottom: 16px; line-height: 1.1;
+  }
+  .success-title em { color: var(--rose); font-style: italic; }
+  .success-sub { font-size: 14px; color: rgba(74,55,40,0.5); font-weight: 300; line-height: 1.8; max-width: 480px; margin: 0 auto 48px; }
+  .btn-success {
+    padding: 18px 52px;
+    background: var(--rose); color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 300; border: none; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-success:hover { background: var(--rose-light); transform: translateY(-2px); }
+
+  /* ─── MODAL ───────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,18,16,0.85); z-index: 1000;
+    align-items: center; justify-content: center;
+    padding: 24px; backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.25s ease; }
+  .modal {
+    background: var(--cream); max-width: 520px; width: 100%;
+    padding: 52px 48px; position: relative;
+    animation: fadeUp 0.35s ease;
+  }
+  .modal-close {
+    position: absolute; top: 20px; right: 24px;
+    background: none; border: none; cursor: pointer;
+    font-size: 20px; color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--rose); }
+  .modal-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--rose); margin-bottom: 12px; }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 400;
+    color: var(--deep); margin-bottom: 12px;
+  }
+  .modal-desc { font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.7; margin-bottom: 32px; }
+  .modal-field { margin-bottom: 16px; }
+  .modal-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; display: block; }
+  .btn-confirm {
+    width: 100%; padding: 16px;
+    background: var(--deep); color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 300; border: none; cursor: pointer; margin-top: 8px;
+    transition: all 0.3s;
+  }
+  .btn-confirm:hover { background: var(--rose); }
+
+  /* ─── ANIMATIONS ──────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* ─── MISC ────────────────────────────────────── */
+  .divider-gold {
+    width: 48px; height: 1px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    margin: 0 0 40px;
+  }
+  .toast {
+    position: fixed; bottom: 32px; right: 32px; z-index: 2000;
+    background: var(--deep); color: var(--cream);
+    padding: 16px 28px;
+    font-size: 13px; font-weight: 300;
+    border-left: 3px solid var(--rose);
+    animation: fadeUp 0.4s ease;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .app-nav { padding: 0 20px; }
+    .nav-links { gap: 20px; }
+    .section-wrap { padding: 60px 20px; }
+    .survey-body { padding: 48px 20px 80px; }
+    .choice-grid.col-2 { grid-template-columns: 1fr; }
+    .modal { padding: 36px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  LANDING SCREEN                                -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-bg"></div>
+  <div class="grain"></div>
+  <div class="landing-content">
+    <p class="landing-eyebrow">Welcome to</p>
+    <h1 class="landing-title">Super<em>mom</em></h1>
+    <p class="landing-subtitle">A sanctuary built by mothers, for mothers.</p>
+    <div class="landing-divider"></div>
+    <p class="landing-question">Who are you today?</p>
+    <div class="landing-buttons">
+      <button class="btn-landing btn-primary-land" onclick="goTo('screen-mom-survey'); initMomSurvey()">I'm a Mom</button>
+      <button class="btn-landing btn-secondary-land" onclick="goTo('screen-provider-survey'); initProviderSurvey()">I'm a Service Provider</button>
+    </div>
+  </div>
+  <p class="landing-footer">Supermom &nbsp;·&nbsp; Berlin &nbsp;·&nbsp; 2025</p>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  MOM SURVEY                                    -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="screen-mom-survey" class="screen">
+  <div class="survey-header">
+    <div class="survey-logo">Super<span>mom</span></div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="mom-progress"></div></div>
+      <span class="progress-label" id="mom-progress-label">1 of 5</span>
+    </div>
+  </div>
+  <div class="survey-body">
+
+    <!-- Step 1 -->
+    <div class="survey-step active" id="mom-step-1">
+      <p class="step-number">01 — Let's start gently</p>
+      <h2 class="step-question">Hello, beautiful. What's your <em>name?</em></h2>
+      <p class="step-hint">Just your first name is perfect.</p>
+      <input class="text-input" id="mom-name" placeholder="e.g. Amara" type="text"/>
+      <div>
+        <button class="btn-next" onclick="momNext(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="survey-step" id="mom-step-2">
+      <p class="step-number">02 — Your season</p>
+      <h2 class="step-question">How old are your <em>little ones?</em></h2>
+      <p class="step-hint">Select all that apply.</p>
+      <div class="choice-grid col-2">
+        <div class="choice-card" onclick="toggleChoice(this)">
+          <div class="choice-label">Newborn – 1 year</div>
+          <div class="choice-sub">The tender beginning</div>
+        </div>
+        <div class="choice-card" onclick="toggleChoice(this)">
+          <div class="choice-label">1 – 3 years</div>
+          <div class="choice-sub">Curious & energetic</div>
+        </div>
+        <div class="choice-card" onclick="toggleChoice(this)">
+          <div class="choice-label">3 – 6 years</div>
+          <div class="choice-sub">Big feelings, big questions</div>
+        </div>
+        <div class="choice-card" onclick="toggleChoice(this)">
+          <div class="choice-label">6 – 12 years</div>
+          <div class="choice-sub">The school years</div>
+        </div>
+        <div class="choice-card" onclick="toggleChoice(this)">
+          <div class="choice-label">Teenager</div>
+          <div class="choice-sub">A whole new world</div>
+        </div>
+        <div class="choice-card" onclick="toggleChoice(this)">
+          <div class="choice-label">I'm expecting</div>
+          <div class="choice-sub">The great anticipation</div>
+        </div>
+      </div>
+      <div>
+        <button class="btn-next" onclick="momNext(2)">Continue →</button>
+        <button class="btn-back" onclick="momBack(2)">← Back</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="survey-step" id="mom-step-3">
+      <p class="step-number">03 — What weighs on you</p>
+      <h2 class="step-question">What feels <em>heaviest</em> right now?</h2>
+      <p class="step-hint">Choose up to three. No judgement here.</p>
+      <div class="choice-grid">
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Figuring out what to cook every single day</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Keeping the house tidy while doing everything else</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Feeling like my brain never really switches off</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Not feeling seen or appreciated by my partner</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Feeling lonely in this motherhood journey</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Balancing work and being present for my children</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 3)"><div class="choice-label">Mom guilt — never feeling like enough</div></div>
+      </div>
+      <div>
+        <button class="btn-next" onclick="momNext(3)">Continue →</button>
+        <button class="btn-back" onclick="momBack(3)">← Back</button>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="survey-step" id="mom-step-4">
+      <p class="step-number">04 — What you need</p>
+      <h2 class="step-question">What would make your days feel <em>lighter?</em></h2>
+      <p class="step-hint">Pick your top two.</p>
+      <div class="choice-grid col-2">
+        <div class="choice-card" onclick="toggleChoice(this, 2)"><div class="choice-label">🍲 Meal planning & cooking help</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 2)"><div class="choice-label">🧹 A cleaner for my home</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 2)"><div class="choice-label">👶 Babysitting support</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 2)"><div class="choice-label">💬 A community that truly understands</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 2)"><div class="choice-label">🌿 Time to breathe — just for me</div></div>
+        <div class="choice-card" onclick="toggleChoice(this, 2)"><div class="choice-label">💪 Someone to structure my day</div></div>
+      </div>
+      <div>
+        <button class="btn-next" onclick="momNext(4)">Continue →</button>
+        <button class="btn-back" onclick="momBack(4)">← Back</button>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="survey-step" id="mom-step-5">
+      <p class="step-number">05 — Your village</p>
+      <h2 class="step-question">One last thing — what does <em>community</em> mean to you?</h2>
+      <p class="step-hint">In your own words. There's no right answer.</p>
+      <textarea class="text-input" id="mom-community" rows="4" placeholder="A place where I don't have to pretend I have it all together..."></textarea>
+      <div>
+        <button class="btn-next" onclick="finishMomSurvey()">Enter Supermom →</button>
+        <button class="btn-back" onclick="momBack(5)">← Back</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  PROVIDER SURVEY                               -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="screen-provider-survey" class="screen">
+  <div class="survey-header">
+    <div class="survey-logo">Super<span>mom</span></div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="prov-progress"></div></div>
+      <span class="progress-label" id="prov-progress-label">1 of 5</span>
+    </div>
+  </div>
+  <div class="survey-body">
+
+    <!-- P Step 1 -->
+    <div class="survey-step active" id="prov-step-1">
+      <p class="step-number">01 — Let's meet you</p>
+      <h2 class="step-question">Welcome. What is your <em>name?</em></h2>
+      <p class="step-hint">First name is fine.</p>
+      <input class="text-input" id="prov-name" placeholder="e.g. Sarah" type="text"/>
+      <div>
+        <button class="btn-next" onclick="provNext(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- P Step 2 -->
+    <div class="survey-step" id="prov-step-2">
+      <p class="step-number">02 — Your service</p>
+      <h2 class="step-question">What kind of <em>support</em> do you offer?</h2>
+      <p class="step-hint">Choose the one that fits best.</p>
+      <div class="choice-grid">
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-2')">
+          <div class="choice-label">👶 Babysitter / Childcare</div>
+          <div class="choice-sub">Looking after children in the home or outside</div>
+        </div>
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-2')">
+          <div class="choice-label">🧹 Home Cleaner</div>
+          <div class="choice-sub">Regular or deep cleaning of family homes</div>
+        </div>
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-2')">
+          <div class="choice-label">🍲 Home Cook / Meal Prep</div>
+          <div class="choice-sub">Batch cooking, meal planning support</div>
+        </div>
+      </div>
+      <div>
+        <button class="btn-next" onclick="provNext(2)">Continue →</button>
+        <button class="btn-back" onclick="provBack(2)">← Back</button>
+      </div>
+    </div>
+
+    <!-- P Step 3 -->
+    <div class="survey-step" id="prov-step-3">
+      <p class="step-number">03 — Your experience</p>
+      <h2 class="step-question">How long have you been <em>doing this?</em></h2>
+      <p class="step-hint">Honesty is always the best start.</p>
+      <div class="choice-grid col-2">
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-3')"><div class="choice-label">Less than 1 year</div><div class="choice-sub">Just getting started</div></div>
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-3')"><div class="choice-label">1 – 2 years</div><div class="choice-sub">Building my practice</div></div>
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-3')"><div class="choice-label">3 – 5 years</div><div class="choice-sub">Experienced & confident</div></div>
+        <div class="choice-card" onclick="selectOne(this, 'prov-step-3')"><div class="choice-label">5+ years</div><div class="choice-sub">A true professional</div></div>
+      </div>
+      <div>
+        <button class="btn-next" onclick="provNext(3)">Continue →</button>
+        <button class="btn-back" onclick="provBack(3)">← Back</button>
+      </div>
+    </div>
+
+    <!-- P Step 4 -->
+    <div class="survey-step" id="prov-step-4">
+      <p class="step-number">04 — Availability</p>
+      <h2 class="step-question">When are you <em>available?</em></h2>
+      <p class="step-hint">Select all that apply.</p>
+      <div class="choice-grid col-2">
+        <div class="choice-card" onclick="toggleChoice(this)"><div class="choice-label">Weekday mornings</div></div>
+        <div class="choice-card" onclick="toggleChoice(this)"><div class="choice-label">Weekday afternoons</div></div>
+        <div class="choice-card" onclick="toggleChoice(this)"><div class="choice-label">Weekday evenings</div></div>
+        <div class="choice-card" onclick="toggleChoice(this)"><div class="choice-label">Weekends</div></div>
+        <div class="choice-card" onclick="toggleChoice(this)"><div class="choice-label">Flexible / Variable</div></div>
+        <div class="choice-card" onclick="toggleChoice(this)"><div class="choice-label">Full-time</div></div>
+      </div>
+      <div>
+        <button class="btn-next" onclick="provNext(4)">Continue →</button>
+        <button class="btn-back" onclick="provBack(4)">← Back</button>
+      </div>
+    </div>
+
+    <!-- P Step 5 -->
+    <div class="survey-step" id="prov-step-5">
+      <p class="step-number">05 — About you</p>
+      <h2 class="step-question">Tell moms a little about <em>yourself.</em></h2>
+      <p class="step-hint">This becomes your profile bio — warm, genuine, and brief.</p>
+      <textarea class="text-input" id="prov-bio" rows="4" placeholder="I'm a mother of two myself, and I know how much it means when someone shows up reliably and with care..."></textarea>
+      <div>
+        <button class="btn-next" onclick="finishProviderSurvey()">Submit My Profile →</button>
+        <button class="btn-back" onclick="provBack(5)">← Back</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  MAIN APP                                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+  <!-- Nav -->
+  <nav class="app-nav">
+    <div class="nav-logo">Super<span>mom</span></div>
+    <div class="nav-links">
+      <button class="nav-link active-tab" onclick="showTab('tab-groups', this)">Groups</button>
+      <button class="nav-link" onclick="showTab('tab-services', this)">Services</button>
+    </div>
+    <div class="nav-greeting">Welcome back, <strong id="nav-name">Mama</strong> 🌸</div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="app-hero">
+    <p class="hero-eyebrow">Your Supermom Home</p>
+    <h1 class="hero-name" id="app-hero-title">You <em>belong</em> here, <span id="hero-name-span">Mama</span>.</h1>
+    <p class="hero-sub">A curated space where small groups of real mothers lift each other — with services that make life a little lighter.</p>
+  </div>
+
+  <!-- Tab: Groups -->
+  <div class="tab-content active-tab" id="tab-groups">
+    <div class="section-wrap">
+      <p class="section-eyebrow">Find Your Circle</p>
+      <h2 class="section-title">Your <em>Groups</em></h2>
+      <div class="divider-gold"></div>
+      <p class="section-desc">Every group is limited to 3–7 mothers — intimate by design. Find your people, join your circle, and show up as you are.</p>
+      <div class="groups-grid" id="groups-container"></div>
+    </div>
+  </div>
+
+  <!-- Tab: Services -->
+  <div class="tab-content" id="tab-services">
+    <div class="section-wrap">
+      <p class="section-eyebrow">Support When You Need It</p>
+      <h2 class="section-title">Trusted <em>Services</em></h2>
+      <div class="divider-gold"></div>
+      <p class="section-desc">Vetted, warm, and reliable. Every provider on Supermom understands what it means to care for a family.</p>
+      <div class="services-tabs">
+        <button class="service-tab active" onclick="showServiceTab('babysitters', this)">👶 Babysitters</button>
+        <button class="service-tab" onclick="showServiceTab('cleaners', this)">🧹 Cleaners</button>
+      </div>
+      <div id="service-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  SUCCESS SCREEN (Provider)                     -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="screen-success" class="screen">
+  <div class="success-icon">🌸</div>
+  <h1 class="success-title">You're in, <em id="success-name">beautiful</em>.</h1>
+  <p class="success-sub">Your profile has been submitted. Our team will be in touch shortly to welcome you properly into the Supermom provider family.</p>
+  <button class="btn-success" onclick="goTo('screen-landing')">← Back to Home</button>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  BOOKING MODAL                                 -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <p class="modal-eyebrow">Book a Session</p>
+    <h2 class="modal-title" id="modal-provider-name">Sarah M.</h2>
+    <p class="modal-desc" id="modal-provider-role">Babysitter</p>
+    <div class="modal-field">
+      <label class="modal-label">Your preferred date</label>
+      <input class="text-input" type="date" id="modal-date"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Time slot</label>
+      <select class="text-input" id="modal-time">
+        <option>Morning (8am – 12pm)</option>
+        <option>Afternoon (12pm – 5pm)</option>
+        <option>Evening (5pm – 9pm)</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">A note for the provider (optional)</label>
+      <textarea class="text-input" rows="2" placeholder="e.g. My daughter is 2, loves drawing..."></textarea>
+    </div>
+    <button class="btn-confirm" onclick="confirmBooking()">Confirm Booking →</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  DATA & LOGIC                                  -->
+<!-- ══════════════════════════════════════════════ -->
+<script>
+// ─── DATA ────────────────────────────────────────
+const GROUPS = [
+  {
+    icon: "🙏",
+    name: "Praying Moms",
+    desc: "A sacred space for mothers who find strength in prayer. Share your intentions, lift each other's burdens, and begin each week anchored in faith and gratitude.",
+    tag: "Faith & Spirituality",
+    schedule: "Sundays, 8am — Online",
+    spots: 2,
+    total: 6
+  },
+  {
+    icon: "📖",
+    name: "Bible Study & Discussion",
+    desc: "Deep dives into scripture with a mother's lens. Each session explores themes of grace, endurance, and identity — all too relevant to the season of motherhood.",
+    tag: "Faith & Learning",
+    schedule: "Tuesdays, 7:30pm — Online",
+    spots: 3,
+    total: 7
+  },
+  {
+    icon: "🌿",
+    name: "The Strolling Sisterhood",
+    desc: "Fresh air, real talk, and the company of women who get it. A walking group that meets weekly in local parks — children welcome, no agenda, just movement and connection.",
+    tag: "Active & Outdoors",
+    schedule: "Saturdays, 10am — In Person",
+    spots: 1,
+    total: 5
+  },
+  {
+    icon: "💼",
+    name: "Mama Entrepreneurs",
+    desc: "For mothers building businesses while raising children. Share wins, swap strategies, hold each other accountable, and prove — together — that building an empire and raising a family are not mutually exclusive.",
+    tag: "Business & Ambition",
+    schedule: "Wednesdays, 8pm — Hybrid",
+    spots: 3,
+    total: 6
+  },
+  {
+    icon: "🎨",
+    name: "Creative Mamas Circle",
+    desc: "A space where mothers reclaim their creativity. Journaling, vision boards, gentle art, and honest conversation about who we are beyond our role as caregivers.",
+    tag: "Creativity & Wellbeing",
+    schedule: "Thursdays, 7pm — Hybrid",
+    spots: 2,
+    total: 6
+  }
+];
+
+const BABYSITTERS = [
+  {
+    photo: "https://randomuser.me/api/portraits/women/44.jpg",
+    name: "Amina S.",
+    role: "Certified Babysitter",
+    bio: "Mother of one and early childhood educator with 7 years of experience. I bring warmth, structure, and a genuine love for little ones to every family I support.",
+    tags: ["Infant care", "Bilingual (DE/EN)", "First Aid"],
+    rating: "4.9", reviews: 38
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/68.jpg",
+    name: "Elena P.",
+    role: "Babysitter & Au Pair",
+    bio: "Former au pair from Portugal, now based in Berlin. I'm patient, playful, and experienced with toddlers through primary age. Your children will be in loving hands.",
+    tags: ["Toddlers", "School age", "Trilingual"],
+    rating: "4.8", reviews: 24
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/89.jpg",
+    name: "Fatou D.",
+    role: "Newborn Specialist",
+    bio: "A doula and postpartum supporter with a deep understanding of the early months. I offer calm, experienced care so new mamas can actually rest.",
+    tags: ["Newborns", "Postpartum", "Sleep support"],
+    rating: "5.0", reviews: 17
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/55.jpg",
+    name: "Maria K.",
+    role: "Babysitter & Tutor",
+    bio: "Primary school teacher by day, babysitter by love. I combine gentle structure with imaginative play. Happy to help with homework too!",
+    tags: ["Homework help", "Ages 4–12", "Arts & crafts"],
+    rating: "4.9", reviews: 45
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/32.jpg",
+    name: "Sophie W.",
+    role: "Weekend & Evening Sitter",
+    bio: "Studying child psychology and passionate about supportive, child-led care. Available evenings and weekends. References available on request.",
+    tags: ["Evenings", "Weekends", "Sensory-friendly"],
+    rating: "4.7", reviews: 12
+  }
+];
+
+const CLEANERS = [
+  {
+    photo: "https://randomuser.me/api/portraits/women/79.jpg",
+    name: "Grace O.",
+    role: "Professional Home Cleaner",
+    bio: "10 years of experience in family homes across Berlin. I use eco-friendly products and understand that a clean home is a peaceful home. Punctual, thorough, and discreet.",
+    tags: ["Eco products", "Deep clean", "Weekly service"],
+    rating: "5.0", reviews: 62
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/17.jpg",
+    name: "Klara B.",
+    role: "Home Cleaning Specialist",
+    bio: "Berlin native who brings a methodical approach and genuine care to every home. Specialised in family homes with young children — I know where the mess really hides.",
+    tags: ["Family homes", "Child-safe products", "Flexible hours"],
+    rating: "4.9", reviews: 41
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/63.jpg",
+    name: "Nadia R.",
+    role: "Deep Clean & Organisation",
+    bio: "Cleaner and home organiser — I don't just tidy, I transform. Perfect if you need a reset after a chaotic week or a seasonal deep clean.",
+    tags: ["Organisation", "Deep clean", "Decluttering"],
+    rating: "4.8", reviews: 29
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/91.jpg",
+    name: "Blessing A.",
+    role: "Family Home Cleaner",
+    bio: "A mother myself, I clean the way I'd want my own home cleaned — with care, attention to detail, and a quiet efficiency that respects your family's space.",
+    tags: ["Regular clean", "Weekend available", "References"],
+    rating: "4.9", reviews: 33
+  },
+  {
+    photo: "https://randomuser.me/api/portraits/women/28.jpg",
+    name: "Lena M.",
+    role: "Flexible Cleaning Support",
+    bio: "Friendly, reliable, and easy to communicate with. I offer both one-time and recurring services. Happy to work around nap times and school schedules.",
+    tags: ["Flexible", "Short-notice", "Recurring"],
+    rating: "4.7", reviews: 18
+  }
+];
+
+// ─── STATE ───────────────────────────────────────
+let momName = '';
+let momStep = 1;
+let provStep = 1;
+let provName = '';
+let joinedGroups = new Set();
+let currentServiceTab = 'babysitters';
+
+// ─── NAVIGATION ──────────────────────────────────
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ─── MOM SURVEY ──────────────────────────────────
+function initMomSurvey() {
+  momStep = 1;
+  updateMomProgress();
+}
+
+function updateMomProgress() {
+  const pct = ((momStep - 1) / 4) * 100;
+  document.getElementById('mom-progress').style.width = pct + '%';
+  document.getElementById('mom-progress-label').textContent = momStep + ' of 5';
+}
+
+function momNext(current) {
+  if (current === 1) {
+    const val = document.getElementById('mom-name').value.trim();
+    if (!val) { showToast('Please tell us your name 🌸'); return; }
+    momName = val;
+  }
+  if (momStep < 5) {
+    document.getElementById('mom-step-' + momStep).classList.remove('active');
+    momStep++;
+    document.getElementById('mom-step-' + momStep).classList.add('active');
+    updateMomProgress();
+    window.scrollTo(0, 0);
+  }
+}
+
+function momBack(current) {
+  if (momStep > 1) {
+    document.getElementById('mom-step-' + momStep).classList.remove('active');
+    momStep--;
+    document.getElementById('mom-step-' + momStep).classList.add('active');
+    updateMomProgress();
+    window.scrollTo(0, 0);
+  }
+}
+
+function finishMomSurvey() {
+  document.getElementById('mom-progress').style.width = '100%';
+  document.getElementById('mom-progress-label').textContent = 'Complete!';
+  setTimeout(() => {
+    buildApp();
+    goTo('screen-app');
+  }, 400);
+}
+
+// ─── PROVIDER SURVEY ─────────────────────────────
+function initProviderSurvey() {
+  provStep = 1;
+  updateProvProgress();
+}
+
+function updateProvProgress() {
+  const pct = ((provStep - 1) / 4) * 100;
+  document.getElementById('prov-progress').style.width = pct + '%';
+  document.getElementById('prov-progress-label').textContent = provStep + ' of 5';
+}
+
+function provNext(current) {
+  if (current === 1) {
+    const val = document.getElementById('prov-name').value.trim();
+    if (!val) { showToast('Please enter your name 🌸'); return; }
+    provName = val;
+  }
+  if (provStep < 5) {
+    document.getElementById('prov-step-' + provStep).classList.remove('active');
+    provStep++;
+    document.getElementById('prov-step-' + provStep).classList.add('active');
+    updateProvProgress();
+    window.scrollTo(0, 0);
+  }
+}
+
+function provBack(current) {
+  if (provStep > 1) {
+    document.getElementById('prov-step-' + provStep).classList.remove('active');
+    provStep--;
+    document.getElementById('prov-step-' + provStep).classList.add('active');
+    updateProvProgress();
+    window.scrollTo(0, 0);
+  }
+}
+
+function finishProviderSurvey() {
+  document.getElementById('prov-progress').style.width = '100%';
+  document.getElementById('success-name').textContent = provName || 'beautiful';
+  setTimeout(() => goTo('screen-success'), 300);
+}
+
+// ─── BUILD APP ────────────────────────────────────
+function buildApp() {
+  // Set name
+  document.getElementById('nav-name').textContent = momName || 'Mama';
+  document.getElementById('hero-name-span').textContent = momName || 'Mama';
+
+  // Build groups
+  const gc = document.getElementById('groups-container');
+  gc.innerHTML = '';
+  GROUPS.forEach((g, i) => {
+    const spotsLeft = g.spots;
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    card.innerHTML = `
+      <span class="group-icon">${g.icon}</span>
+      <div class="group-name">${g.name}</div>
+      <div class="group-desc">${g.desc}</div>
+      <div class="group-meta">
+        <span class="group-tag">${g.tag}</span>
+        <span class="group-spots">${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} left · ${g.schedule}</span>
+      </div>
+      <button class="btn-join" id="join-btn-${i}" onclick="joinGroup(${i}, '${g.name}')">Join This Circle</button>
+    `;
+    gc.appendChild(card);
+  });
+
+  // Build services
+  renderServiceTab('babysitters');
+}
+
+function joinGroup(i, name) {
+  const card = document.querySelector(`#join-btn-${i}`).closest('.group-card');
+  const btn = document.getElementById(`join-btn-${i}`);
+  if (joinedGroups.has(i)) {
+    joinedGroups.delete(i);
+    card.classList.remove('joined');
+    btn.textContent = 'Join This Circle';
+    btn.classList.remove('joined-btn');
+    showToast(`Left "${name}"`);
+  } else {
+    joinedGroups.add(i);
+    card.classList.add('joined');
+    btn.textContent = '✓ You\'re In';
+    btn.classList.add('joined-btn');
+    showToast(`Welcome to "${name}" 🌸`);
+  }
+}
+
+// ─── SERVICES ─────────────────────────────────────
+function renderServiceTab(type) {
+  currentServiceTab = type;
+  const data = type === 'babysitters' ? BABYSITTERS : CLEANERS;
+  const el = document.getElementById('service-content');
+  el.innerHTML = `<div class="providers-grid">${data.map(p => providerCard(p, type)).join('')}</div>`;
+}
+
+function providerCard(p, type) {
+  const role = type === 'babysitters' ? 'Babysitter' : 'Cleaner';
+  return `
+    <div class="provider-card">
+      <img class="provider-img" src="${p.photo}" alt="${p.name}" style="display:block; width:100%; height:220px; object-fit:cover; object-position: top;" onerror="this.style.background='var(--blush)';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.innerHTML='🌸';"/>
+      <div class="provider-body">
+        <div class="provider-name">${p.name}</div>
+        <div class="provider-role">${p.role}</div>
+        <div class="provider-bio">${p.bio}</div>
+        <div class="provider-tags">${p.tags.map(t => `<span class="provider-tag">${t}</span>`).join('')}</div>
+        <div class="provider-rating"><span class="stars">★★★★★</span> ${p.rating} · ${p.reviews} reviews</div>
+        <button class="btn-book" onclick="openBooking('${p.name.replace("'","\\'")}', '${p.role.replace("'","\\'")}')">Book ${role === 'Babysitter' ? 'a Session' : 'a Clean'}</button>
+      </div>
+    </div>
+  `;
+}
+
+function showServiceTab(type, btn) {
+  document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderServiceTab(type);
+}
+
+// ─── TABS ─────────────────────────────────────────
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active-tab'));
+  document.getElementById(tabId).classList.add('active-tab');
+  btn.classList.add('active-tab');
+}
+
+// ─── MODAL ────────────────────────────────────────
+function openBooking(name, role) {
+  document.getElementById('modal-provider-name').textContent = name;
+  document.getElementById('modal-provider-role').textContent = role;
+  document.getElementById('booking-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('booking-modal').classList.remove('open');
+}
+
+function confirmBooking() {
+  const name = document.getElementById('modal-provider-name').textContent;
+  closeModal();
+  showToast(`Booking request sent to ${name} 🌸`);
+}
+
+// ─── CHOICE HELPERS ───────────────────────────────
+function toggleChoice(el, max) {
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    return;
+  }
+  if (max) {
+    const parent = el.closest('.choice-grid');
+    const selected = parent.querySelectorAll('.selected');
+    if (selected.length >= max) {
+      showToast(`Choose up to ${max} options`);
+      return;
+    }
+  }
+  el.classList.add('selected');
+}
+
+function selectOne(el, stepId) {
+  const parent = el.closest('.choice-grid');
+  parent.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ─── TOAST ────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Close modal on overlay click
+document.getElementById('booking-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
